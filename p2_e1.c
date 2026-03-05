@@ -71,19 +71,24 @@ int main (int argc, char **argv) {
 
     pinput = show_player_menu(stack);
 
-    while(pinput == 1){
-        stack_pop(stack);
-        pinput = show_player_menu(stack);
-
-        if(pinput != 1 || pinput != 2){
-            fprintf(stderr, "Not a valid option\n");
+    while(pinput == 1 || pinput == 2){
+        if (pinput == 1) {
+            stack_pop(stack);
             pinput = show_player_menu(stack);
-        }
-
-        if(pinput == 2){
+        } else if (pinput == 2) {
             radio_free(rad);
             stack_free(stack);
-            return 0;
         }
     }
+
+    if (pinput != 1 && pinput != 2) {
+        printf("Not available option\n");
+        radio_free(rad);
+        stack_free(stack);
+        return 1;
+    }
+
+    
+
+    return 0;
 }
