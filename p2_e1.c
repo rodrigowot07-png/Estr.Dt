@@ -38,6 +38,7 @@ int main (int argc, char **argv) {
     FILE *fin = NULL;
     Radio *rad = NULL;
     Stack *stack = NULL;
+    void *pop;
     Status stat;
     int pinput;
 
@@ -69,28 +70,21 @@ int main (int argc, char **argv) {
         return 1;
     }
 
-    pinput = show_player_menu(stack);
-
-    while(pinput != 1 && pinput != 2){
-        fprintf(stderr, "Error, not a valid option\n");
-        pinput = show_player_menu(stack);
-    }
-
-    while(pinput == 1){
-        stack_pop(stack);
+    do {
         pinput = show_player_menu(stack);
 
-        while(pinput != 1 && pinput != 2){
-            fprintf(stderr, "Error, not a valid option\n");
-            pinput = show_player_menu(stack);
+        if (pinput == 1) {
+            pop = stack_pop(stack);
         }
-    }
 
-    if(pinput == 2){
-        radio_free(rad);
-        stack_free(stack);
-        return 0;
-    }
+        if (pop) {
+            music_free(pop);
+        }
+        
+    } while (pinput != 2);
+
+    radio_free(rad);
+    stack_free(stack);
 
     return 0;
 }

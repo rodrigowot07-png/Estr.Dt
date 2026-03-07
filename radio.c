@@ -300,11 +300,10 @@ int radio_print(FILE *pf, const Radio *r) {
 Status radio_readFromFile(FILE *fin, Radio *r, Stack *stack) {
     char scan_file[MAX_FILE];
     char buffer[STR_LENGTH * 4];
-    long orig, dest;
     int i;
 
     /* Control error */
-    if (!fin || !r) {
+    if (!fin || !r || !stack) {
         return ERROR;
     }
 
@@ -315,26 +314,13 @@ Status radio_readFromFile(FILE *fin, Radio *r, Stack *stack) {
 
     /* Reads the songs one by one */
     for (i = 0; i < atoi(scan_file); i++) {
-        /* Reads one full line */
-        fgets(buffer, sizeof(buffer), fin);
+        if (fgets(buffer, sizeof(buffer), fin) == NULL) break;
 
-        /* Creates the song and adds it to the radio */
         if (radio_newMusic(r, buffer) == ERROR) {
             return ERROR;
         }
 
-        if(stack_push(stack, buffer) == ERROR){
-            return ERROR;
-        }
-    }
-
-    /* Reads all the relations */
-    while(fgets(scan_file, sizeof(scan_file), fin)) {
-        if(sscanf(scan_file, "%ld %ld", &orig, &dest)!=2){
-            return ERROR;
-        }
-
-        if (radio_newRelation(r, orig, dest) == ERROR) {
+        if (stack_push(stack, r->songs[r->num_music - 1]) == ERROR) {
             return ERROR;
         }
     }
