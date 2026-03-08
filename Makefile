@@ -1,7 +1,7 @@
 ########################################################
 CC=gcc
 CFLAGS= -g -Wall
-EJS = p2_e1
+EJS = p2_e2a
 #EJS = p1_e1 p1_e2 p1_e3
 ########################################################
 OBJECTSP1E1 = p1_e1.o music.o
@@ -57,7 +57,11 @@ clean:
 
 run_e2a:
 	@echo ">>>>>>Running p2_e2a with playlistA and playlistB"
-	./p2_e2a playlistA.txt playlistB.txt
+	./p2_e2a playlist1.txt playlist2.txt
+
+runv_e2a:
+	@echo ">>>>>>Running p2_e2a with valgrind"
+	valgrind --leak-check=full ./p2_e2a playlist1.txt playlist2.txt
 		
 run:
 	@echo ">>>>>>Running p2_e1"

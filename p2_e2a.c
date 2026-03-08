@@ -4,7 +4,7 @@
 #include "radio.h"
 #include "stack.h"
 
-Status fuse_stacks(Stack *stin1, Stack *stin2, Stack *stout) {
+Status merge_stacks(Stack *stin1, Stack *stin2, Stack *stout) {
     Music *m1 = NULL;
     Music *m2 = NULL;
     void *e = NULL;
@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
     printf("Playlist 1:\n");
     stack_print(stdout, s2, music_plain_print);
 
-    if (fuse_stacks(s1, s2, sout) == OK) {
+    if (merge_stacks(s1, s2, sout) == OK) {
         fprintf(stdout, "\nPlaylist combined:\n");
         stack_print(stdout, sout, music_plain_print);
         printf("\n");
