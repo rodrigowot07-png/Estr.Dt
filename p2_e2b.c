@@ -1,16 +1,31 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "radio.h"
 #include "stack.h"
 
-Status merge_stacks(Stack *stin1, Stack *stin2, Stack *stout) {
+typedef int (*P_artist_cmp)(const char*,const char*);
+
+int artist_cmp(const char* artist1, const char* artist2){
+    int cmp;
+
+    if(!artist1 || !artist2){
+        return -1;
+    }
+
+    cmp = strcmp(artist1, artist2);
+    
+    return cmp;
+}
+
+Status merge_stacks(Stack *stin1, Stack *stin2, Stack *stout, P_artist_cmp cmp) {
     Music *m1 = NULL;
     Music *m2 = NULL;
     void *e = NULL;
     Stack *s = NULL;
 
-    if (!stin1 || !stin2 || !stout) {
+    if (!stin1 || !stin2 || !stout || !cmp) {
         return ERROR;
     }
 
@@ -18,7 +33,7 @@ Status merge_stacks(Stack *stin1, Stack *stin2, Stack *stout) {
         m1 = (Music *)stack_top(stin1);
         m2 = (Music *)stack_top(stin2);
 
-        if (music_getDuration(m1) > music_getDuration(m2)) {
+        if (cmp(music_getArtist(m1), music_getArtist(m2)) > 0) {
             e = stack_pop(stin1);
         } else {
             e = stack_pop(stin2);
@@ -46,6 +61,7 @@ int main(int argc, char *argv[]) {
     FILE *f1 = NULL, *f2 = NULL;
     Radio *r1 = NULL, *r2 = NULL;
     Stack *s1 = NULL, *s2 = NULL, *sout = NULL;
+    P_artist_cmp cmp = artist_cmp;
 
     if (argc < 3) {
         fprintf(stderr, "Error, use: %s <playlistA.txt> <playlistB.txt>\n", argv[0]);
@@ -102,7 +118,7 @@ int main(int argc, char *argv[]) {
     printf("Playlist 1:\n");
     stack_print(stdout, s2, music_plain_print);
 
-    if (merge_stacks(s1, s2, sout) == OK) {
+    if (merge_stacks(s1, s2, sout, cmp) == OK) {
         fprintf(stdout, "\nPlaylist combined:\n");
         stack_print(stdout, sout, music_plain_print);
         printf("\n");

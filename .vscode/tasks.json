@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build p2_e2b",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "p2_e2b.c",
+                "radio.c",
+                "music.c",
+                "file_utils.c",
+                "libstack.a",
+                "-o",
+                "p2_e2b"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}

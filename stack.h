@@ -26,13 +26,10 @@
  **/
 typedef struct _Stack Stack;
 
-
-
 /**
  * @brief Typedef for a function pointer to print a stack element at stream
  **/
 typedef int (*P_stack_ele_print)(FILE *, const void*);
-
 
 /**
  * @brief This function initializes an empty stack.
