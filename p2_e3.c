@@ -6,10 +6,10 @@
 #include "stack.h"
 
 int main(int argc, char *argv[]) {
-    Radio *r   = NULL;
-    Stack *s   = NULL;   
-    FILE  *fin = NULL;
-    long   from_id, to_id;
+    Radio *r = NULL;
+    Stack *s = NULL;   
+    FILE *fin = NULL;
+    long from_id, to_id;
 
     if (argc != 4) {
         fprintf(stderr, "Usage: %s <radio_file> <from_id> <to_id>\n", argv[0]);
@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     }
 
     from_id = atol(argv[2]);
-    to_id   = atol(argv[3]);
+    to_id = atol(argv[3]);
 
     if (!(fin = fopen(argv[1], "r"))) {
         fprintf(stderr, "Error, could not open file %s\n", argv[1]);
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     printf("\n");
 
     printf("From music with id: %ld\n", from_id);
-    printf("To music with id: %ld\n",   to_id);
+    printf("To music with id: %ld\n", to_id);
     printf("Music exploration path:\n");
 
     if (radio_depthSearch(r, from_id, to_id) == ERROR) {
