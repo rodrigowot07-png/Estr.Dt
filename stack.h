@@ -1,4 +1,3 @@
-// [ALL]
 /**
  * @file  stack.h
  * @author EDAT
