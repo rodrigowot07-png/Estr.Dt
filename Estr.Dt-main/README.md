@@ -1,1 +1,0 @@
-# Estr.Dt.Ejer1

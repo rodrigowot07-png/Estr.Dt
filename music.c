@@ -350,4 +350,3 @@ int music_formatted_print(FILE * pf, const void * m) {
 	return counter;
 }
 
-

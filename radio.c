@@ -340,35 +340,86 @@ Status radio_readFromFile(FILE *fin, Radio *r, Stack *stack) {
 Status radio_depthSearch(Radio *r, long from_id, long to_id) {
     Music *mi = NULL;
     Music *mf = NULL;
+    Music *current = NULL;
+    Music *neighbor = NULL;
     Stack *s = NULL;
+    Bool found = FALSE;
+    int i, j, current_index;
 
     if (!r || from_id < 0 || to_id < 0) {
         return ERROR;
     }
 
-    mi = r->songs[from_id];
-    mf = r->songs[to_id];
+    i = radio_findId(r, from_id);
+    j = radio_findId(r, to_id);
 
-    music_setState(mi, NOT_LISTENED);
-    music_setState(mf, NOT_LISTENED);
+    if (i == -1 || j == -1) {
+        return ERROR;
+    }
+
+    mi = r->songs[i];
+    mf = r->songs[j];
+
+    for (i = 0; i < r->num_music; i++) {
+        music_setState(r->songs[i], NOT_LISTENED);
+    }
 
     if (!(s = stack_init())) {
         return ERROR;
-    } else {
-        music_setState(mi, LISTENED);
     }
 
+    music_setState(mi, LISTENED);
+    if (stack_push(s, mi) == ERROR) {
+        stack_free(s);
+        return ERROR;
+    }
 
+    while ((stack_isEmpty(s) == FALSE) && (found == FALSE)) {
+        if (!(current = (Music *)stack_pop(s))) {
+            break;
+        }
 
-    
+        music_plain_print(stdout, current);
+        fprintf(stdout, "\n");
 
-   
+        if (music_getId(current) == music_getId(mf)) {
+            found = TRUE;
+        } else {
+            current_index = music_getIndex(current);
+            for (j = 0; j < r->num_music; j++) {
+                if (r->relations[current_index][j] == TRUE) {
+                    neighbor = r->songs[j];
+                    if (music_getState(neighbor) == NOT_LISTENED) {
+                        music_setState(neighbor, LISTENED);
+                        if (stack_push(s, neighbor) == ERROR) {
+                            stack_free(s);
+                            return ERROR;
+                        }
+                    }
+                } 
+            }
+        }
+    }
 
+    stack_free(s);
 
+    return OK;
+}
 
+Status radio_readRelationsFromFile(FILE *fin, Radio *r) {
+    long orig, dest;
 
+    /* Control error */
+    if (!fin || !r) {
+        return ERROR;
+    }
 
+    /* Reads pairs until the file has no relation count */
+    while (fscanf(fin, "%ld %ld\n", &orig, &dest) == 2) {
+        if (radio_newRelation(r, orig, dest) == ERROR) {
+            return ERROR;
+        }
+    }
 
-
-
+    return OK;
 }
