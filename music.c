@@ -254,7 +254,7 @@ int music_getIndex(const Music *m) {
 }
 
 Status music_setIndex(Music *m, int index) {
-  if (!m || index <= 0) {
+  if (!m || index < 0) {
     return ERROR;
   }
 
