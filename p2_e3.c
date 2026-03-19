@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     to_id = atol(argv[3]);
 
     if (!(fin = fopen(argv[1], "r"))) {
-        fprintf(stderr, "Error, could not open file %s\n", argv[1]);
+        fprintf(stderr, "Error: could not open file %s\n", argv[1]);
         return 1;
     }
 
