@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (radio_readRelationsFromFile(fin, r) == ERROR) {
-        fprintf(stderr, "Error: could not read relations from '%s'\n", argv[1]);
+        fprintf(stderr, "Error: could not read relations from %s\n", argv[1]);
         stack_free(s);
         radio_free(r);
         fclose(fin);
