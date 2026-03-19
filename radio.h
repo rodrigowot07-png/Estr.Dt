@@ -204,7 +204,7 @@ Status radio_readFromFile (FILE *fin, Radio *r, Stack *stack);
 Status radio_depthSearch(Radio *r, long from_id, long to_id);
 
 /** 
-* @brief Reads the relations from de dfs file and creates them
+* @brief Reads the relations from the dfs file and creates them
 *
 * @param fin Pointer to FILE
 * @param r Pointer to the Radio struct 
