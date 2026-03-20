@@ -77,6 +77,9 @@ radio.o: radio.c radio.h music.h
 stack.o: stack.c stack.h
 	$(CC) $(CFLAGS) -c stack.c
 
+queue.o: queue.c queue.h
+	$(CC) $(CFLAGS) -c queue.c
+
 clear:
 	rm -rf *.o 
 
@@ -84,7 +87,7 @@ clean:
 	rm -rf *.o $(EJS) p2_e1 p2_e2a p2_e2b p2_e3
 
 	
-run:
+runp2:
 	@echo ">>>>>>Running p2_e1"
 	./p2_e1 playlist1.txt
 	@echo ">>>>>>Running p2_e2a with playlist1 and playlist2"
@@ -102,7 +105,7 @@ run:
 	@echo ">>>>>>Running p2_e3s (from id:1 to id:9)"
 	./p2_e3s radio_dfs.txt 1 9
 
-runv:
+runvp2:
 	@echo ">>>>>>Running p2_e1 with valgrind"
 	valgrind --leak-check=full ./p2_e1 playlist1.txt
 	@echo ">>>>>>Running p2_e2a with valgrind"
