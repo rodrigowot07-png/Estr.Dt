@@ -115,8 +115,31 @@ size_t queue_size(const Queue* pq) {
     int i, counter;
 
     if(pq == NULL) {
-        return 0;
+        return -1;
     }
 
-    for(i = 0; )
+    if(pq->rear >= pq->front) {
+        return pq->rear -pq->front;
+    } else {
+        return MAX_QUEUE - (pq->front - pq->rear);
+    }
+}
+
+int queue_print(FILE *fp, const Queue *pq, p_queue_ele_print f) {
+  int i = pq->front, n=0;
+
+  if (!pq || !fp) {
+    return -1;
+  }
+
+  fprintf(fp, "SIZE: %lu\n", queue_size(pq));
+
+  while (i != pq->rear) {
+    n += f(fp, pq->data[i]);
+    fprintf(fp, "\n");
+
+    i = (i+1) % MAX_QUEUE;
+  }
+
+  return n;
 }

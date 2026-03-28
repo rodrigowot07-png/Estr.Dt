@@ -14,6 +14,7 @@
 #include "music.h"
 #include "types.h"
 #include "stack.h"
+#include "queue.h"
 
 #define MAX_MSC 4096
 
@@ -188,7 +189,7 @@ int radio_print (FILE *pf, const Radio *r);
  *
  * @return OK or ERROR
  */
-Status radio_readFromFile (FILE *fin, Radio *r, Stack *stack);
+Status radio_readFromFile (FILE *fin, Radio *r, Queue *queue);
 
 /**
 * @brief: Makes a search from the origin music to the final music of a radio using the

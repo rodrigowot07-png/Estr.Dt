@@ -306,13 +306,13 @@ int radio_print(FILE *pf, const Radio *r) {
     return counter;
 }
 
-Status radio_readFromFile(FILE *fin, Radio *r, Stack *stack) {
+Status radio_readFromFile(FILE *fin, Radio *r, Queue *queue) {
     char scan_file[MAX_FILE];
     char buffer[STR_LENGTH * 4];
     int i;
 
     /* Control error */
-    if (!fin || !r || !stack) {
+    if (!fin || !r || !queue) {
         return ERROR;
     }
 
@@ -329,7 +329,7 @@ Status radio_readFromFile(FILE *fin, Radio *r, Stack *stack) {
             return ERROR;
         }
 
-        if (stack_push(stack, r->songs[r->num_music - 1]) == ERROR) {
+        if (queue_push(queue, r->songs[r->num_music - 1]) == ERROR) {
             return ERROR;
         }
     }
