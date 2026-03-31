@@ -3,11 +3,12 @@
 #include <string.h>
 
 #include "radio.h"
+#include "queue.h"
 
 int show_player_menu(Queue *history);
 
 int show_player_menu(Queue *history) {
-    int option;
+    int option = 0;
     Music *m = NULL;
 	
 	/* Obtenemos canción actual del front de la lista */
@@ -19,24 +20,27 @@ int show_player_menu(Queue *history) {
     }
 	
 	/* Imprimimos historial (cola) */
-	printf("\nRecently Played:\n");
+	printf("\nUpcoming:\n");
 	queue_print(stdout, history, music_plain_print);
 	
 	/* Mostramos menu y esperamos selección */
-    printf("\n1. Back to previous song\n");
-    printf("2. Exit\n");
-    printf("Choose an option: ");
-
-    scanf("%d", &option);
-
-    while(option != 1 && option != 2){
-        printf("Invalid option\n");
-        while(getchar() != '\n');
-
+    do {
+        printf("1. Next song\n");
+        printf("2. Exit\n");
         printf("Choose an option: ");
 
-        scanf("%d", &option);
-    }
+        if (scanf("%d", &option) != 1) {
+            printf("Invalid option\n");
+            while (getchar() != '\n');
+            option = -1;
+            continue;
+        }
+
+        if (option != 1 && option != 2) {
+            printf("No option available\n");
+        }
+
+    } while (option != 1 && option != 2);
 
     return option;
 }

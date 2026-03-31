@@ -49,7 +49,7 @@ Queue *queue_new() {
 
 void queue_free(Queue *pq) { free((void *)pq); }
 
-Bool queue_is_empty(const Queue *pq) {
+Bool queue_isEmpty(const Queue *pq) {
     if (pq == NULL) {
         return TRUE;
     }
@@ -75,7 +75,7 @@ Status queue_push(Queue *pq, void *e) {
 void *queue_pop(Queue *pq) {
     void *e = NULL;
 
-    if ((pq == NULL) || (queue_is_empty(pq) == TRUE)) {
+    if ((pq == NULL) || (queue_isEmpty(pq) == TRUE)) {
         return NULL;
     }
 
@@ -87,18 +87,18 @@ void *queue_pop(Queue *pq) {
     return e;
 }
 
-void *queue_get_front(const Queue *pq) {
-    if ((pq == NULL) || (queue_is_empty(pq) == TRUE)) {
+void *queue_getFront(const Queue *pq) {
+    if ((pq == NULL) || (queue_isEmpty(pq) == TRUE)) {
         return NULL;
     }
 
     return *(pq->front);
 }
 
-void *queue_get_back(const Queue *pq) {
+void *queue_getBack(const Queue *pq) {
     void **last_elem;
 
-    if ((pq == NULL) || (queue_is_empty(pq) == TRUE)) {
+    if ((pq == NULL) || (queue_isEmpty(pq) == TRUE)) {
         return NULL;
     }
 
@@ -130,8 +130,6 @@ int queue_print(FILE *fp, const Queue *pq, p_queue_ele_print f) {
     if (!pq || !fp) {
         return -1;
     }
-
-    fprintf(fp, "SIZE: %lu\n", queue_size(pq));
 
     while (i != pq->rear) {
         n += f(fp, *i);

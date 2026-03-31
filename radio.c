@@ -13,9 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 #include "radio.h"
-
 
 #define STR_LENGTH 64
 
@@ -349,7 +347,7 @@ Status radio_depthSearch(Radio *r, long from_id, long to_id) {
     if (!r || from_id < 0 || to_id < 0) {
         return ERROR;
     }
-
+    
     i = radio_findId(r, from_id);
     j = radio_findId(r, to_id);
 
@@ -402,6 +400,75 @@ Status radio_depthSearch(Radio *r, long from_id, long to_id) {
     }
 
     stack_free(s);
+
+    return OK;
+}
+
+Status radio_breadthSearch(Radio *r, long from_id, long to_id) {
+    Music *mi = NULL;
+    Music *mf = NULL;
+    Music *current = NULL;
+    Music *neighbor = NULL;
+    Queue *q = NULL;
+    Bool found = FALSE;
+    int i, j, current_index;
+
+    if (!r || from_id < 0 || to_id < 0) {
+        return ERROR;
+    }
+
+    i = radio_findId(r, from_id);
+    j = radio_findId(r, to_id);
+
+    if (i == -1 || j == -1) {
+        return ERROR;
+    }
+
+    mi = r->songs[i];
+    mf = r->songs[j];
+
+    for (i = 0; i < r->num_music; i++) {
+        music_setState(r->songs[i], NOT_LISTENED);
+    }
+
+    if (!(q = queue_new())) {
+        return ERROR;
+    }
+
+    music_setState(mi, LISTENED);
+    if (queue_push(q, mi) == ERROR) {
+        queue_free(q);
+        return ERROR;
+    }
+
+    while ((queue_isEmpty(q) == FALSE) && (found == FALSE)) {
+        if (!(current = (Music *)queue_pop(q))) {
+            break;
+        }
+
+        music_plain_print(stdout, current);
+        fprintf(stdout, "\n");
+
+        if (music_getId(current) == music_getId(mf)) {
+            found = TRUE;
+        } else {
+            current_index = music_getIndex(current);
+            for (j = 0; j < r->num_music; j++) {
+                if (r->relations[current_index][j] == TRUE) {
+                    neighbor = r->songs[j];
+                    if (music_getState(neighbor) == NOT_LISTENED) {
+                        music_setState(neighbor, LISTENED);
+                        if (queue_push(q, neighbor) == ERROR) {
+                            queue_free(q);
+                            return ERROR;
+                        }
+                    }
+                } 
+            }
+        }
+    }
+
+    queue_free(q);
 
     return OK;
 }

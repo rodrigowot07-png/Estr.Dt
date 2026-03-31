@@ -159,6 +159,36 @@ long *radio_getRelationsFromId(const Radio *r, long id);
  */
 int radio_print (FILE *pf, const Radio *r);
 
+/**
+ * @brief Reads a radio definition from a text file.
+ *
+ * Reads a radio description from the text file pointed to by fin,
+ * and fills the radio r.
+ *
+ * The first line in the file contains the number of music.
+ * Then one line per music with the music description.  
+ * Finally one line per relation, with the ids of the origin and 
+ * the destination (this is one way only)
+ *
+ * For example:
+ *
+ * 5
+ * id:"317" title:"Golden" artist:"Huntrix" duration:"194"
+ * id:"482" title:"Watermelon Sugar" artist:"Harry Styles" duration: "174"
+ * id:"105" title:"Don't Stop Believin" artist:"Journey" duration: "251"
+ * id:"231" title:"Livin' on a Prayer" artist:"Bon Jovi" duration: "249"
+ * id:"764" title:"Sweet Child O' Mine" artist:"Guns N' Roses" duration: "356"
+ * 482 317
+ * 105 231
+ * 231 105
+ * 764 231
+ *
+ * @param fin Pointer to the input stream.
+ * @param r Pointer to the radio.
+ *
+ * @return OK or ERROR
+ */
+Status radio_readFromFileS (FILE *fin, Radio *r, Stack *stack);
 
 /**
  * @brief Reads a radio definition from a text file.
@@ -181,7 +211,7 @@ int radio_print (FILE *pf, const Radio *r);
  * id:"764" title:"Sweet Child O' Mine" artist:"Guns N' Roses" duration: "356"
  * 482 317
  * 105 231
- * 231 105 764
+ * 231 105
  * 764 231
  *
  * @param fin Pointer to the input stream.
@@ -203,6 +233,19 @@ Status radio_readFromFile (FILE *fin, Radio *r, Queue *queue);
 * @return The function returns OK or ERROR
 **/
 Status radio_depthSearch(Radio *r, long from_id, long to_id);
+
+/**
+* @brief: Makes a search from the origin music to the final music of a radio using the
+* breadth-first search algorithm through an ADT Queue
+*
+* The function prints each visited music while traversing the radio
+*
+* @param r, Pointer to radio
+* @param from_id, id of the origin Music
+* @param to_id, id of the destination Music
+* @return The function returns OK or ERROR
+**/
+Status radio_breadthSearch(Radio *r, long from_id, long to_id);
 
 /** 
 * @brief Reads the relations from the dfs file and creates them
