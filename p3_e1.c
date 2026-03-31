@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "radio.h"
-#include "queue.h"
 
 int show_player_menu(Queue *history);
 
@@ -12,7 +11,7 @@ int show_player_menu(Queue *history) {
     Music *m = NULL;
 	
 	/* Obtenemos canción actual del front de la lista */
-	m = (Music *)queue_getFront (history);
+	m = (Music *)queue_getFront(history);
     if (m != NULL) {
 		music_formatted_print(stdout, m);
     } else {

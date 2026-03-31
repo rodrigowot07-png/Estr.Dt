@@ -112,8 +112,6 @@ void *queue_get_back(const Queue *pq) {
 }
 
 size_t queue_size(const Queue* pq) {
-    int i, counter;
-
     if(pq == NULL) {
         return -1;
     }
@@ -126,20 +124,25 @@ size_t queue_size(const Queue* pq) {
 }
 
 int queue_print(FILE *fp, const Queue *pq, p_queue_ele_print f) {
-  int i = pq->front, n=0;
+    int n = 0;
 
-  if (!pq || !fp) {
-    return -1;
-  }
+    if (!pq || !fp) {
+        return -1;
+    }
 
-  fprintf(fp, "SIZE: %lu\n", queue_size(pq));
+    fprintf(fp, "SIZE: %lu\n", queue_size(pq));
 
-  while (i != pq->rear) {
-    n += f(fp, pq->data[i]);
-    fprintf(fp, "\n");
+    void **i = pq->front;
 
-    i = (i+1) % MAX_QUEUE;
-  }
+    while (i != pq->rear) {
+        n += f(fp, *i);
+        fprintf(fp, "\n");
 
-  return n;
+        i++;
+        if (i >= pq->data + MAX_QUEUE) {
+            i = (void **)pq->data;
+        }
+    }
+
+    return n;
 }

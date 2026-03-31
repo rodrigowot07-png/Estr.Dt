@@ -3,7 +3,7 @@ CC=gcc
 CFLAGS= -g -Wall -ansi -pedantic
 EJS = p3_e1
 ########################################################
-OBJECTSP3E1 = p3_e1.o radio.o music.o
+OBJECTSP3E1 = p3_e1.o radio.o music.o queue.o stack.o
 ########################################################
 
 all: $(EJS) clear
@@ -12,14 +12,14 @@ all: $(EJS) clear
 p3_e1: $(OBJECTSP3E1)
 	$(CC) $(CFLAGS) -o p3_e1 $(OBJECTSP3E1)
 
-p3_e1.o: p3_e1.c music.h radio.h queue.h
+p3_e1.o: p3_e1.c music.h radio.h
 	$(CC) $(CFLAGS) -c p3_e1.c
 
 
 music.o: music.c music.h
 	$(CC) $(CFLAGS) -c music.c
 
-radio.o: radio.c radio.h music.h
+radio.o: radio.c radio.h music.h stack.h queue.h
 	$(CC) $(CFLAGS) -c radio.c
 
 stack.o: stack.c stack.h
