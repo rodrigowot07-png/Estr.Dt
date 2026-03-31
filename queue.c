@@ -125,14 +125,13 @@ size_t queue_size(const Queue* pq) {
 
 int queue_print(FILE *fp, const Queue *pq, p_queue_ele_print f) {
     int n = 0;
+    void **i = pq->front;
 
     if (!pq || !fp) {
         return -1;
     }
 
     fprintf(fp, "SIZE: %lu\n", queue_size(pq));
-
-    void **i = pq->front;
 
     while (i != pq->rear) {
         n += f(fp, *i);
