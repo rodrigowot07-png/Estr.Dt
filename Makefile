@@ -1,14 +1,17 @@
 ########################################################
 CC=gcc
 CFLAGS= -g -Wall -ansi -pedantic
-EJS = p3_e1 p3_e2 p3_e3
+EJS = p3_e1 p3_e2 p3_e3 p3_e1s p3_e2s
 ########################################################
-OBJECTSP3E1 = p3_e1.o radio.o music.o queue.o stack.o
-OBJECTSP3E2 = p3_e2.o radio.o music.o queue.o stack.o
-OBJECTSP3E3 = p3_e3.o music.o list.o
+OBJECTSP3E1  = p3_e1.o radio.o music.o queue.o stack.o
+OBJECTSP3E2  = p3_e2.o radio.o music.o queue.o stack.o
+OBJECTSP3E3  = p3_e3.o music.o list.o
+OBJECTSP3E1S = p3_e1.o radio.o music.o queueList.o list.o stack.o
+OBJECTSP3E2S = p3_e2.o radio.o music.o queueList.o list.o stack.o
 ########################################################
 
 all: $(EJS) clear
+
 
 p3_e1: $(OBJECTSP3E1)
 	$(CC) $(CFLAGS) -o p3_e1 $(OBJECTSP3E1)
@@ -18,6 +21,12 @@ p3_e2: $(OBJECTSP3E2)
 
 p3_e3: $(OBJECTSP3E3)
 	$(CC) $(CFLAGS) -o p3_e3 $(OBJECTSP3E3)
+
+p3_e1s: $(OBJECTSP3E1S)
+	$(CC) $(CFLAGS) -o p3_e1s $(OBJECTSP3E1S)
+
+p3_e2s: $(OBJECTSP3E2S)
+	$(CC) $(CFLAGS) -o p3_e2s $(OBJECTSP3E2S)
 
 
 p3_e1.o: p3_e1.c music.h radio.h queue.h stack.h
@@ -45,11 +54,14 @@ queue.o: queue.c queue.h
 list.o: list.c list.h
 	$(CC) $(CFLAGS) -c list.c
 
+queueList.o: queueList.c queue.h list.h
+	$(CC) $(CFLAGS) -c queueList.c
+
 clear:
-	rm -rf *.o 
+	rm -rf *.o
 
 clean:
-	rm -rf *.o $(EJS) p3_e1 p3_e2 p3_e3
+	rm -rf *.o $(EJS)
 
 run:
 	@echo ">>>>>>Running p3_e1"
@@ -58,6 +70,10 @@ run:
 	./p3_e2 radio_bfs.txt 1 2
 	@echo ">>>>>>Running p3_e3"
 	./p3_e3 radio_bfs.txt
+	@echo ">>>>>>Running p3_e1s"
+	./p3_e1s playlist1.txt
+	@echo ">>>>>>Running p3_e2s"
+	./p3_e2s radio_bfs.txt 1 2
 
 runv:
 	@echo ">>>>>>Running p3_e1 with valgrind"
@@ -66,3 +82,7 @@ runv:
 	valgrind --leak-check=full --track-origins=yes -s ./p3_e2 radio_bfs.txt 1 2
 	@echo ">>>>>>Running p3_e3 with valgrind"
 	valgrind --leak-check=full --track-origins=yes -s ./p3_e3 radio_bfs.txt
+	@echo ">>>>>>Running p3_e1s with valgrind"
+	valgrind --leak-check=full --track-origins=yes -s ./p3_e1s playlist1.txt
+	@echo ">>>>>>Running p3_e2s with valgrind"
+	valgrind --leak-check=full --track-origins=yes -s ./p3_e2s radio_bfs.txt 1 2
