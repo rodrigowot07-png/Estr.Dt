@@ -7,7 +7,7 @@
 
 #define MAX_LINE 500
 
-int _music_print_newline(FILE *fp, const void *m) {
+int music_print_newline(FILE *fp, const void *m) {
     int n;
 
     n = music_plain_print(fp, m);
