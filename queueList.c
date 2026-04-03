@@ -9,7 +9,9 @@ struct _Queue {
 };
  
 Queue *queue_new() {
-    Queue *pq = (Queue *)malloc(sizeof(Queue));
+    Queue *pq = NULL;
+
+    pq = (Queue *) malloc(sizeof(Queue));
     if (!pq) {
         return NULL;
     }
