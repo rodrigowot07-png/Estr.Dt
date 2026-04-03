@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
 
     fclose(fin);
 
-    list_print(stdout, list, _music_print_newline);
+    list_print(stdout, list, music_print_newline);
 
     size = list_size(list);
     half = size / 2;
