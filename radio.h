@@ -244,6 +244,20 @@ Status radio_depthSearch(Radio *r, long from_id, long to_id);
 * @param from_id, id of the origin Music
 * @param to_id, id of the destination Music
 * @return The function returns OK or ERROR
+*
+* 1. La diferencia entre una búsqueda BFS y una DFS es que en la búsqueda DFS se explora un camino hasta que se llega a un nodo en el que no se puede explorar más y retrocede. 
+*    En cambio la búsqueda BFS lo que hace es expandirse an la búsqueda, recorriendo el grafo nivel por nivel. 
+*
+* 2. 
+    Problemas recomandables para DFS:
+    * Resolución de un laberinto.
+    * Detección de ciclos en grafos.
+    * Enumeración y combinatoria.
+    
+    Problemas recomendables para BFS:
+    * Camino más corto en un laberinto.
+    * Redes sociales (grados de separación).
+    * Propagación por niveles.   
 **/
 Status radio_breadthSearch(Radio *r, long from_id, long to_id);
 
