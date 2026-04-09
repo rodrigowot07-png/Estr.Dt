@@ -7,19 +7,6 @@
 
 #define MAX_LINE 500
 
-int music_print_newline(FILE *fp, const void *m) {
-    int n;
-
-    n = music_plain_print(fp, m);
-    if (n < 0) {
-        return n;
-    }
-
-    fprintf(fp, "\n");
-
-    return n + 1;
-}
-
 int main(int argc, char *argv[]) {
     FILE *fin = NULL;
     List *list = NULL;
@@ -84,7 +71,7 @@ int main(int argc, char *argv[]) {
 
     fclose(fin);
 
-    list_print(stdout, list, music_print_newline);
+    list_print(stdout, list, music_plain_print);
 
     size = list_size(list);
     half = size / 2;

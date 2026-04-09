@@ -19,6 +19,8 @@ int show_player_menu(Queue *history) {
         printf("\nNo song currently playing.\n");
     }
 	
+    queue_pop(history);
+
 	/* Imprimimos historial (cola) */
 	printf("\nUpcoming:\n");
 	queue_print(stdout, history, music_plain_print);
@@ -82,12 +84,7 @@ int main (int argc, char *argv[]) {
     }
 
     do {
-        pinput = show_player_menu(queue);
-
-        if (pinput == 1) {
-            queue_pop(queue);
-        }
-        
+        pinput = show_player_menu(queue);     
     } while (pinput != 2);
 
     radio_free(rad);

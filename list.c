@@ -213,6 +213,7 @@ int list_print(FILE *fp, const List *pl, p_list_ele_print f) {
     curr = pl->first;
     while (curr) {
         ret = f(fp, curr->info);
+        fprintf(fp, "\n");
         if (ret < 0) {
             return ret;
         }
