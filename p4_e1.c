@@ -113,7 +113,7 @@ int main(int argc, char const *argv[]) {
     r = radio_init();
     if (!r) mainCleanUp (EXIT_FAILURE, r, f_in);
     
-    // lee el fichero
+    /* lee el fichero */
     if  (radio_readFromFile(f_in, r) == ERROR) {
       fprintf(stdout, "Not file or File format incorrect\n");
       mainCleanUp (EXIT_FAILURE, r, f_in);
@@ -187,4 +187,28 @@ int main(int argc, char const *argv[]) {
   
   tree_destroy(t);
   mainCleanUp (EXIT_SUCCESS, r, f_in);
+
+  return 0;
 }
+/*
+ * P1: ¿Por qué los tiempos y la profundidad varían según el modo normal o sorted?
+ *
+ * En modo "normal" las canciones se insertan en orden aleatorio (tal como
+ * aparecen en el fichero). Esto genera un árbol aproximadamente balanceado,
+ * donde la profundidad crece como O(log n). Con 10 canciones la profundidad
+ * es 6; con 100 es 16; con 1000 es 20. Las operaciones find_min, find_max y
+ * contains recorren caminos cortos desde la raíz.
+ *
+ * En modo "sorted" el array se ordena por id con qsort antes de insertar,
+ * pero en vez de insertarlo secuencialmente (lo que daría un árbol lineal),
+ * la función loadBalancedTree inserta siempre el elemento central del rango
+ * actual, lo que construye un árbol perfectamente balanceado con profundidad
+ * O(log n) garantizada. Con 10 canciones la profundidad es 4; con 100 es 7;
+ * con 1000 es 10. Esto explica por qué sorted es mas eficiente que normal:
+ * la estrategia de inserción por la mitad produce el árbol óptimo.
+ *
+ * Si en modo sorted se insertasen en orden creciente, el árbol
+ * degeneraría en una lista enlazada con profundidad O(n), haciendo las
+ * búsquedas extremadamente lentas. Esta es la principal debilidad de un BST
+ * no balanceado. 
+ */

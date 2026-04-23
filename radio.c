@@ -304,22 +304,53 @@ int radio_print(FILE *pf, const Radio *r) {
     return counter;
 }
 
-Status radio_readFromFile(FILE *fin, Radio *r, Queue *queue) {
+Music **radio_getSongs(const Radio *r) {
+    if (!r) {
+        return NULL;
+    }
+    return (Music **)r->songs;
+}
+
+int _radio_findmusicById(const Radio *r, long id) {
+    return radio_findId(r, id);
+}
+
+Status radio_readFromFile(FILE *fin, Radio *r) {
     char scan_file[MAX_FILE];
     char buffer[STR_LENGTH * 4];
     int i;
 
-    /* Control error */
+    if (!fin || !r) {
+        return ERROR;
+    }
+
+    if (fgets(scan_file, sizeof(scan_file), fin) == NULL) {
+        return ERROR;
+    }
+
+    for (i = 0; i < atoi(scan_file); i++) {
+        if (fgets(buffer, sizeof(buffer), fin) == NULL) break;
+        if (radio_newMusic(r, buffer) == ERROR) {
+            return ERROR;
+        }
+    }
+
+    return OK;
+}
+
+Status radio_readFromFile_queue(FILE *fin, Radio *r, Queue *queue) {
+    char scan_file[MAX_FILE];
+    char buffer[STR_LENGTH * 4];
+    int i;
+
     if (!fin || !r || !queue) {
         return ERROR;
     }
 
-    /* Reads the number of songs that the file has */
     if((fgets(scan_file, sizeof(scan_file), fin)) == NULL){
         return ERROR;
     }
 
-    /* Reads the songs one by one */
     for (i = 0; i < atoi(scan_file); i++) {
         if (fgets(buffer, sizeof(buffer), fin) == NULL) break;
 

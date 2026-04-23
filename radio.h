@@ -219,7 +219,7 @@ Status radio_readFromFileS (FILE *fin, Radio *r, Stack *stack);
  *
  * @return OK or ERROR
  */
-Status radio_readFromFile (FILE *fin, Radio *r, Queue *queue);
+Status radio_readFromFileQ (FILE *fin, Radio *r, Queue *queue);
 
 /**
 * @brief: Makes a search from the origin music to the final music of a radio using the
@@ -269,5 +269,38 @@ Status radio_breadthSearch(Radio *r, long from_id, long to_id);
 * @return OK or ERROR
 */
 Status radio_readRelationsFromFile(FILE *fin, Radio *r);
+
+
+/**
+ * @brief Returns the array of songs stored in a radio.
+ *
+ * @param r Pointer to the radio.
+ *
+ * @return Pointer to the internal array of Music pointers, or NULL if error.
+ */
+Music **radio_getSongs(const Radio *r);
+
+/**
+ * @brief Finds the index of a music in the radio by its id.
+ *
+ * @param r Pointer to the radio.
+ * @param id ID of the music to find.
+ *
+ * @return Index of the music in the internal array, or -1 if not found.
+ */
+int _radio_findmusicById(const Radio *r, long id);
+
+/**
+ * @brief Reads a radio definition from a text file (without Queue).
+ *
+ * Same as radio_readFromFile but does not require a Queue.
+ * Reads only the music entries, not relations.
+ *
+ * @param fin Pointer to the input stream.
+ * @param r Pointer to the radio.
+ *
+ * @return OK or ERROR
+ */
+Status radio_readFromFile(FILE *fin, Radio *r);
 
 #endif /* radio_H */
