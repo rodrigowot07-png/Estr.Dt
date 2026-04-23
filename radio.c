@@ -329,7 +329,10 @@ Status radio_readFromFile(FILE *fin, Radio *r) {
     }
 
     for (i = 0; i < atoi(scan_file); i++) {
-        if (fgets(buffer, sizeof(buffer), fin) == NULL) break;
+        if (fgets(buffer, sizeof(buffer), fin) == NULL) {
+            break;
+        }    
+        
         if (radio_newMusic(r, buffer) == ERROR) {
             return ERROR;
         }
@@ -352,7 +355,9 @@ Status radio_readFromFile_queue(FILE *fin, Radio *r, Queue *queue) {
     }
 
     for (i = 0; i < atoi(scan_file); i++) {
-        if (fgets(buffer, sizeof(buffer), fin) == NULL) break;
+        if (fgets(buffer, sizeof(buffer), fin) == NULL) {
+            break;
+        }    
 
         if (radio_newMusic(r, buffer) == ERROR) {
             return ERROR;
