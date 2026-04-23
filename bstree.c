@@ -249,3 +249,28 @@ void *tree_find_max(BSTree *tree) {
 
   return bst_find_max_rec(tree->root);
 }
+
+Bool bst_contains_rec(BSTNode *pn, void *elem, P_ele_cmp cmp) {
+  int x;
+
+  if (pn == NULL) {
+    return FALSE;
+  }
+
+  x = cmp(elem, pn->info);
+  if (x == 0) {
+    return TRUE;
+  } else if(x < 0) {
+    return bst_contains_rec(pn->left, elem, cmp);
+  } else {
+    return bst_contains_rec(pn->right, elem, cmp);
+  }
+}
+
+Bool tree_contains(BSTree *tree, const void *elem) {
+  if (tree == NULL || elem == NULL) {
+    return FALSE;
+  }
+
+  return bst_contains_rec(tree->root, elem, tree->cmp_ele);
+}
