@@ -207,4 +207,45 @@ int tree_postOrder(FILE *f, const BSTree *tree) {
   return _bst_postOrder_rec(tree->root, f, tree->print_ele) + fprintf(f, "\n");
 }
 
+
 /**** TODO: find_min, find_max, insert, contains, remove ****/
+
+void *bst_find_min_rec(BSTNode *pn) {
+  if (pn == NULL) {
+    return NULL;
+  }
+
+  if (pn->left == NULL) {
+    return pn->info;
+  }
+
+  return bst_find_min_rec(pn->left);
+}
+
+void *tree_find_min(BSTree *tree) {
+  if (tree == NULL || tree->root == NULL) {
+    return NULL;
+  }
+
+  return bst_find_min_rec(tree->root);
+}
+
+void *bst_find_max_rec(BSTNode *pn) {
+  if (pn == NULL) {
+    return NULL;
+  }
+
+  if (pn->right == NULL) {
+    return pn->info;
+  }
+
+  return bst_find_max_rec(pn->right);
+}
+
+void *tree_find_max(BSTree *tree) {
+  if (tree == NULL || tree->root == NULL) {
+    return NULL;
+  }
+
+  return bst_find_max_rec(tree->root);
+}
