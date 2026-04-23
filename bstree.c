@@ -274,3 +274,22 @@ Bool tree_contains(BSTree *tree, const void *elem) {
 
   return bst_contains_rec(tree->root, elem, tree->cmp_ele);
 }
+
+BSTNode *bst_insert_rec(BSTNode *pn, void *elem, P_ele_cmp cmp, Status *stat) {
+  BSTNode *new_pn = NULL;
+  int x;
+
+  new_pn = _bst_node_new();
+  if (pn_new == NULL) {
+    *stat = ERROR;
+    return NULL;
+  }
+
+  pn_new->info = (void *)elem;
+  *status = OK;
+  return pn_new;
+
+  
+
+
+}
