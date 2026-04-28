@@ -21,7 +21,9 @@ struct _BSTree {
 
 /*** BSTNode TAD private functions ***/
 void _tree_rangeSearch_rec(BSTNode *node, void *min, void *max, List *list, P_ele_cmp cmp);
+
 int _tree_countLongSongs_rec(BSTNode *node, int min_duration);
+
 BSTNode *_bst_node_new() {
   BSTNode *pn = NULL;
 
@@ -258,11 +260,53 @@ BSTNode *_bst_insert_rec(BSTNode *pn, const void *elem, P_ele_cmp cmp) {
     new_node->info = (void *)elem;
     return new_node;
   }
+
   c = cmp(elem, pn->info);
   if (c < 0) {
     pn->left = _bst_insert_rec(pn->left, elem, cmp);
   } else if (c > 0) {
     pn->right = _bst_insert_rec(pn->right, elem, cmp);
+  }
+
+  return pn;
+}
+
+BSTNode *_bst_remove_rec(BSTNode *pn, const void *elem, P_ele_cmp cmp) {
+  BSTNode *aux_node;
+  int c;
+
+  if(!pn) {
+    return NULL;
+  }
+
+  c= cmp(elem, pn->info);
+  if (c < 0) {
+    pn->left = _bst_remove_rec(pn->left, elem, cmp);
+  }
+  else if (c > 0) {
+    pn->right = _bst_remove_rec(pn->right, elem, cmp);
+  }
+  else if(c == 0) {
+    if (pn->left == NULL && pn->right == NULL) {
+      free(pn);
+      return NULL;
+    }
+    else if(pn->left == NULL && pn->right != NULL) {
+      aux_node = pn->right;
+      _bst_node_free(pn);
+      return aux_node; 
+    }
+    else if (pn->left != NULL && pn->right == NULL) {
+      aux_node = pn->left;
+      _bst_node_free(pn);
+      return aux_node;
+    }
+    else if (pn->left != NULL && pn->right != NULL) {
+      aux_node = _bst_find_min_rec(pn->right);
+      pn->info = aux_node->info;
+      pn->right = _bst_remove_rec(pn->right, aux_node->info, cmp);
+      return pn;
+    }
   }
 
   return pn;
@@ -305,14 +349,34 @@ Status tree_insert(BSTree *tree, const void *elem) {
   if (!tree || !elem) {
     return ERROR;
   }
+
   new_root = _bst_insert_rec(tree->root, elem, tree->cmp_ele);
-  if (!new_root && !tree->root) {
+  if (!new_root) {
     return ERROR;
   }
 
-  if (new_root) {
-    tree->root = new_root;
+  tree->root = new_root;
+
+  return OK;
+}
+
+Status tree_remove(BSTree *tree, const void *elem) {
+  BSTNode *del_root;
+
+  if (!tree || !elem) {
+    return FALSE;
+  }
+
+  if (tree_contains(tree, elem) == FALSE) {
+    return OK;
   }
   
+  del_root = _bst_remove_rec(tree->root, elem, tree->cmp_ele);
+  if(!del_root) {
+    return ERROR;
+  }
+
+  tree->root = del_root;
+
   return OK;
 }
