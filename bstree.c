@@ -310,13 +310,13 @@ BSTNode *_bst_remove_rec(BSTNode *pn, const void *elem, P_ele_cmp cmp) {
   return pn;
 }
 
-void tree_rangeSearchRec(BSTNode *pn, void *min, void *max, List *pl, P_ele_cmp cmp) {
+void _tree_rangeSearchRec(BSTNode *pn, void *min, void *max, List *pl, P_ele_cmp cmp) {
   if (pn == NULL) {
     return;
   }
 
   if (cmp(pn->info, min) > 0) {
-    tree_rangeSearchRec(pn->left, min, max, pl, cmp);
+    _tree_rangeSearchRec(pn->left, min, max, pl, cmp);
   }
 
   if (cmp(pn->info, min) >= 0 && cmp(pn->info, max) <= 0) {
@@ -324,7 +324,7 @@ void tree_rangeSearchRec(BSTNode *pn, void *min, void *max, List *pl, P_ele_cmp 
   }
 
   if (cmp(pn->info, max) < 0) {
-    tree_rangeSearchRec(pn->right, min, max, pl, cmp);
+    _tree_rangeSearchRec(pn->right, min, max, pl, cmp);
   }
 }
 
@@ -411,7 +411,7 @@ List *tree_rangeSearch(const BSTree *tree, void *min, void *max) {
     return NULL;
   }
 
-  tree_rangeSearchRec(tree->root, min, max, pl, tree->cmp_ele);
+  _tree_rangeSearchRec(tree->root, min, max, pl, tree->cmp_ele);
 
   return pl;
 }
