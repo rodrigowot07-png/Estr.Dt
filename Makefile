@@ -1,9 +1,10 @@
 ########################################################
 CC = gcc
 CFLAGS = -g -Wall -ansi -pedantic
-EJS = p4_e1
+EJS = p4_e1 p4_e2
 ########################################################
-OBJECTSP4E1  = p4_e1.o radio.o music.o bstree.o queue.o stack.o
+OBJECTSP4E1 = p4_e1.o radio.o music.o bstree.o list.o queue.o stack.o
+OBJECTSP4E2 = p4_e2.o radio.o music.o bstree.o list.o queue.o stack.o
 ########################################################
 
 all: $(EJS) clear
@@ -13,6 +14,12 @@ p4_e1: $(OBJECTSP4E1)
 
 p4_e1.o: p4_e1.c music.h radio.h bstree.h queue.h stack.h
 	$(CC) $(CFLAGS) -c p4_e1.c
+
+p4_e2: $(OBJECTSP4E2)
+	$(CC) $(CFLAGS) -o p4_e2 $(OBJECTSP4E2)
+
+p4_e2.o: p4_e2.c music.h radio.h bstree.h list.h
+	$(CC) $(CFLAGS) -c p4_e2.c
 
 bstree.o: bstree.c bstree.h
 	$(CC) $(CFLAGS) -c bstree.c
@@ -46,9 +53,13 @@ run:
 	./p4_e1 data_music_10.txt 8 normal
 	@echo ">>>>>>Running p4_e1 sorted"
 	./p4_e1 data_music_10.txt 8 sorted
+	@echo ">>>>>>Running p4_e2"
+	./p4_e2 data_music_10.txt 3 7
  
 runv:
 	@echo ">>>>>>Running p4_e1 normal with valgrind"
 	valgrind --leak-check=full --track-origins=yes -s ./p4_e1 data_music_10.txt 8 normal
 	@echo ">>>>>>Running p4_e1 sorted with valgrind"
 	valgrind --leak-check=full --track-origins=yes -s ./p4_e1 data_music_10.txt 8 sorted
+	@echo ">>>>>>Running p4_e2 with valgrind"
+	valgrind --leak-check=full --track-origins=yes -s ./p4_e2 data_music_10.txt 3 7

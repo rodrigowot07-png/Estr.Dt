@@ -183,4 +183,23 @@ Status tree_insert(BSTree *tree, const void *elem);
  */
 Status tree_remove(BSTree *tree, const void *elem);
 
+/**
+ * @brief Public function that returns a list with all the songs between two determined ones.
+ * 
+ * @param tree Pointer to the BSTree struct
+ * @param min Pointer to the first song 
+ * @param max Pointer to the last song;
+ * @return List with the songs in between min and max
+ */
+List *tree_rangeSearch(const BSTree *tree, void *min, void *max); 
+
+/**
+ * @brief Public function that count how many songs have a longer duration than a determined one
+ * 
+ * @param root Pointer to the BSTNode struct
+ * @param min_duration Integer with the duration to pass
+ * @return Number of songs longer than the min_duration
+ */
+int tree_countLongSongs(BSTNode *root, int min_duration);
+
 #endif

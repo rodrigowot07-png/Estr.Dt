@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "bstree.h"
+#include "list.h"
 
 /* START [_BSTNode] */
 typedef struct _BSTNode {
@@ -209,9 +210,6 @@ int tree_postOrder(FILE *f, const BSTree *tree) {
   return _bst_postOrder_rec(tree->root, f, tree->print_ele) + fprintf(f, "\n");
 }
 
-
-/**** TODO: find_min, find_max, insert, contains, remove ****/
-
 BSTNode *_bst_find_min_rec(BSTNode *pn) {
   if (!pn) {
     return NULL;
@@ -222,7 +220,7 @@ BSTNode *_bst_find_min_rec(BSTNode *pn) {
 
   return _bst_find_min_rec(pn->left);
 }
- 
+
 BSTNode *_bst_find_max_rec(BSTNode *pn) {
   if (!pn) {
     return NULL;
@@ -311,7 +309,27 @@ BSTNode *_bst_remove_rec(BSTNode *pn, const void *elem, P_ele_cmp cmp) {
 
   return pn;
 }
- 
+
+void tree_rangeSearchRec(BSTNode *pn, void *min, void *max, List *pl, P_ele_cmp cmp) {
+  if (pn == NULL) {
+    return;
+  }
+
+  if (cmp(pn->info, min) > 0) {
+    tree_rangeSearchRec(pn->left, min, max, pl, cmp);
+  }
+
+  if (cmp(pn->info, min) >= 0 && cmp(pn->info, max) <= 0) {
+    list_pushBack(pl, pn->info);
+  }
+
+  if (cmp(pn->info, max) < 0) {
+    tree_rangeSearchRec(pn->right, min, max, pl, cmp);
+  }
+}
+
+/**** TODO: find_min, find_max, insert, contains, remove ****/
+
 void *tree_find_min(BSTree *tree) {
   BSTNode *node;
   if (!tree || !tree->root) {
@@ -379,4 +397,31 @@ Status tree_remove(BSTree *tree, const void *elem) {
   tree->root = del_root;
 
   return OK;
+}
+
+List *tree_rangeSearch(const BSTree *tree, void *min, void *max) {
+  List *pl = NULL;
+
+  if (tree == NULL || tree->root == NULL) {
+    return NULL;
+  }
+
+  pl = list_new();
+  if (pl == NULL) {
+    return NULL;
+  }
+
+  tree_rangeSearchRec(tree->root, min, max, pl, tree->cmp_ele);
+
+  return pl;
+}
+
+int tree_countLongSongs(BSTNode *root, int min_duration) {
+  int count = 0;
+
+  if (root == NULL) {
+    return -1;
+  }
+
+  return count;
 }
