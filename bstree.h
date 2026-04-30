@@ -200,6 +200,6 @@ List *tree_rangeSearch(const BSTree *tree, void *min, void *max);
  * @param min_duration Integer with the duration to pass
  * @return Number of songs longer than the min_duration
  */
-int tree_countLongSongs(BSTNode *root, int min_duration);
+int tree_countLongSongs(BSTree *root, int min_duration);
 
 #endif

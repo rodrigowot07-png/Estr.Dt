@@ -50,7 +50,7 @@ clean:
 
 run:
 	@echo ">>>>>>Running p4_e1 normal"
-	./p4_e1 data_music_10.txt 8 normal
+	./p4_e1 data_music_1K.txt 8 normal
 	@echo ">>>>>>Running p4_e1 sorted"
 	./p4_e1 data_music_10.txt 8 sorted
 	@echo ">>>>>>Running p4_e2"

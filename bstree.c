@@ -21,9 +21,9 @@ struct _BSTree {
 /* END [_BSTree] */
 
 /*** BSTNode TAD private functions ***/
-void _tree_rangeSearch_rec(BSTNode *node, void *min, void *max, List *list, P_ele_cmp cmp);
+void _bst_rangeSearch_rec(BSTNode *pn, void *min, void *max, List *list, P_ele_cmp cmp);
 
-int _tree_countLongSongs_rec(BSTNode *node, int min_duration);
+int _bst_countLongSongs_rec(BSTNode *pn, int min_duration);
 
 BSTNode *_bst_node_new() {
   BSTNode *pn = NULL;
@@ -277,7 +277,7 @@ BSTNode *_bst_remove_rec(BSTNode *pn, const void *elem, P_ele_cmp cmp) {
     return NULL;
   }
 
-  c= cmp(elem, pn->info);
+  c = cmp(elem, pn->info);
   if (c < 0) {
     pn->left = _bst_remove_rec(pn->left, elem, cmp);
   }
@@ -310,13 +310,13 @@ BSTNode *_bst_remove_rec(BSTNode *pn, const void *elem, P_ele_cmp cmp) {
   return pn;
 }
 
-void _tree_rangeSearchRec(BSTNode *pn, void *min, void *max, List *pl, P_ele_cmp cmp) {
-  if (pn == NULL) {
+void _bst_rangeSearch_rec(BSTNode *pn, void *min, void *max, List *pl, P_ele_cmp cmp) {
+  if (!pn) {
     return;
   }
 
   if (cmp(pn->info, min) > 0) {
-    _tree_rangeSearchRec(pn->left, min, max, pl, cmp);
+    _bst_rangeSearch_rec(pn->left, min, max, pl, cmp);
   }
 
   if (cmp(pn->info, min) >= 0 && cmp(pn->info, max) <= 0) {
@@ -324,8 +324,44 @@ void _tree_rangeSearchRec(BSTNode *pn, void *min, void *max, List *pl, P_ele_cmp
   }
 
   if (cmp(pn->info, max) < 0) {
-    _tree_rangeSearchRec(pn->right, min, max, pl, cmp);
+    _bst_rangeSearch_rec(pn->right, min, max, pl, cmp);
   }
+}
+
+int _bst_countLongSongs_rec(BSTNode *pn, int min_duration) {
+  int count = 0;
+  int result;
+
+  if (!pn) {
+    return -1;
+  }
+
+  if (pn->info > min_duration) {
+    count ++;
+
+    result = _bst_countLongSongs_rec(pn->left, min_duration);
+    if(result > -1) {
+      count += result;
+    }
+
+    result = _bst_countLongSongs_rec(pn->right, min_duration);
+
+    if(result > -1) {
+      count += result;
+    }
+  } else {
+    result = _bst_countLongSongs_rec(pn->left, min_duration);
+    if(result > -1) {
+      count += result;
+    }
+
+    result = _bst_countLongSongs_rec(pn->right, min_duration);
+    if(result > -1) {
+      count += result;
+    }
+  }
+
+  return count;
 }
 
 /**** TODO: find_min, find_max, insert, contains, remove ****/
@@ -402,7 +438,7 @@ Status tree_remove(BSTree *tree, const void *elem) {
 List *tree_rangeSearch(const BSTree *tree, void *min, void *max) {
   List *pl = NULL;
 
-  if (tree == NULL || tree->root == NULL) {
+  if (!tree || !tree->root) {
     return NULL;
   }
 
@@ -411,12 +447,12 @@ List *tree_rangeSearch(const BSTree *tree, void *min, void *max) {
     return NULL;
   }
 
-  _tree_rangeSearchRec(tree->root, min, max, pl, tree->cmp_ele);
+  _bst_rangeSearch_rec(tree->root, min, max, pl, tree->cmp_ele);
 
   return pl;
 }
 
-int tree_countLongSongs(BSTNode *root, int min_duration) {
+int tree_countLongSongs(BSTree *root, int min_duration) {
   int count = 0;
 
   if (root == NULL) {
