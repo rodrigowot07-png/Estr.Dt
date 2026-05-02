@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "bstree.h"
-#include "list.h"
 
 /* START [_BSTNode] */
 typedef struct _BSTNode {
@@ -23,7 +22,7 @@ struct _BSTree {
 /*** BSTNode TAD private functions ***/
 void _bst_rangeSearch_rec(BSTNode *pn, void *min, void *max, List *list, P_ele_cmp cmp);
 
-int _bst_countLongSongs_rec(BSTNode *pn, int min_duration);
+int _bst_countLongSongs_rec(BSTNode *pn, int min_duration, P_ele_cmp cmp);
 
 BSTNode *_bst_node_new() {
   BSTNode *pn = NULL;
@@ -328,38 +327,17 @@ void _bst_rangeSearch_rec(BSTNode *pn, void *min, void *max, List *pl, P_ele_cmp
   }
 }
 
-int _bst_countLongSongs_rec(BSTNode *pn, int min_duration) {
+int _bst_countLongSongs_rec(BSTNode *pn, int min_duration, P_ele_cmp cmp) {
   int count = 0;
-  int result;
 
   if (!pn) {
-    return -1;
+    return 0;
   }
 
-  if (pn->info > min_duration) {
-    count ++;
+  count = (cmp(pn->info, &min_duration) > 0) ? 1 : 0;
 
-    result = _bst_countLongSongs_rec(pn->left, min_duration);
-    if(result > -1) {
-      count += result;
-    }
-
-    result = _bst_countLongSongs_rec(pn->right, min_duration);
-
-    if(result > -1) {
-      count += result;
-    }
-  } else {
-    result = _bst_countLongSongs_rec(pn->left, min_duration);
-    if(result > -1) {
-      count += result;
-    }
-
-    result = _bst_countLongSongs_rec(pn->right, min_duration);
-    if(result > -1) {
-      count += result;
-    }
-  }
+  count += _bst_countLongSongs_rec(pn->left, min_duration, cmp);
+  count += _bst_countLongSongs_rec(pn->right, min_duration, cmp);
 
   return count;
 }
@@ -452,12 +430,14 @@ List *tree_rangeSearch(const BSTree *tree, void *min, void *max) {
   return pl;
 }
 
-int tree_countLongSongs(BSTree *root, int min_duration) {
+int tree_countLongSongs(BSTree *tree, int min_duration) {
   int count = 0;
 
-  if (root == NULL) {
+  if (!tree) {
     return -1;
   }
+
+  count = _bst_countLongSongs_rec(tree->root, min_duration, tree->cmp_ele);
 
   return count;
 }

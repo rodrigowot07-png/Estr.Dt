@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include "list.h"
 #include "types.h"
+#include "music.h"
 
 /**
  * BSTree type definition: a binary search of arbitrary elements.

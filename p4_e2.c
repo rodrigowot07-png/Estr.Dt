@@ -106,10 +106,10 @@ int main(int argc, char *argv[]) {
 
     result = tree_rangeSearch(tree, min_key, max_key);
 
-    printf("Lista de canciones desde id %ld hasta id %ld\n", id_min, id_max);
+    fprintf(stderr, "Lista de canciones desde id %ld hasta id %ld\n", id_min, id_max);
 
     if (!result || list_isEmpty(result)) {
-        printf("(No hay canciones en ese rango)\n");
+        fprintf(stderr, "(No hay canciones en ese rango)\n");
     } else {
         list_print(stdout, result, music_plain_print);
     }
