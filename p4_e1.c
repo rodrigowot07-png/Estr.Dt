@@ -125,6 +125,10 @@ int main(int argc, char const *argv[]) {
 	n = radio_getNumberOfMusic(r);
 	
 	index = _radio_findmusicById(r, music_id);
+  if (index < 0) {
+    fprintf(stdout, "Invalid id\n");
+    exit(EXIT_FAILURE);
+  }
 	m = songs[index];
 	if (m == NULL) {
 		printf("Error when initialising music with id: %ld\n", music_id);
